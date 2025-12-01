@@ -323,6 +323,13 @@ def nursing_BendersDecomposition(SimEngine, Inits, Heuristic,
                 Model._BestTheta = [ThetaV[k] for k in Theta]
     
         # Pass the better solution to Gurobi
+        #
+        #    NOTE TO THE READER
+        #    The latest versions of Gurobi now allow you to use cbSetSolution
+        #    from within GRB.callback.MIPSOL, making the trick used here unnecessary.
+        #    However, I do not intend to change the code. This repository will preserve the
+        #    version used in the computational experiements.
+        #
         if where == gp.GRB.callback.MIPNODE and \
             model.cbGet(gp.GRB.callback.MIPNODE_STATUS) == gp.GRB.OPTIMAL and \
                 model.cbGet(gp.GRB.callback.MIPNODE_OBJBST) > Model._BestObj + EPS:
